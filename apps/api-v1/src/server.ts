@@ -1,9 +1,47 @@
 import { AppConfig } from "@piggy/config";
-function main() {
-  let a = 1;
-  console.log(a);
+import { createServer, Server } from "http";
+import app from "./app";
+const server: Server = createServer(app);
 
-  const app = AppConfig.getInstance();
-  console.log(app.server.apiUrl);
+const unexpectedErrorHandler = (error: unknown) => {
+  console.error("🔥 Unexpected Error: ", error);
+  gracefulShutdown("Unexpected Error");
+};
+
+const gracefulShutdown = async (signal: string) => {
+  console.log(`⚠️ ${signal} received. Shutting down gracefully...`);
+  await exitHandler();
+  process.exit(0);
+};
+
+const exitHandler = async () => {
+  return new Promise<void>((resolve) => {
+    server.close(async () => {
+      console.log("💀 Server closed gracefully");
+      resolve();
+    });
+  });
+};
+async function main() {
+  try {
+    
+     const config = AppConfig.getInstance();
+    const port = config.server.port;
+    const apiUrl = config.server.apiUrl;
+
+    server.listen(port, () => {
+      console.log(`🚀 Server listening on port ${port}`);
+      console.log(`API URL: ${apiUrl}`);
+      console.log(`CORS Origins: ${config.security.corsOrigins.join(", ")}`);
+    });
+     process.on("uncaughtException", unexpectedErrorHandler);
+    process.on("unhandledRejection", unexpectedErrorHandler);
+    process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+    process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+  } catch (error) {
+ console.error("❌ Failed to start server: ", error);
+    process.exit(1);  }
 }
+
+
 main();

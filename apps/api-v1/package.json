@@ -15,9 +15,16 @@
     "@piggy/config": "workspace:*",
     "@piggy/eslint-config": "workspace:*",
     "@piggy/typescript-config": "workspace:*",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "http-status": "^2.1.0",
     "ts-node-dev": "^2.0.0"
   }
 }

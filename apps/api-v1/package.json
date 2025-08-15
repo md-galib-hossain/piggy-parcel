@@ -1,17 +1,18 @@
 {
-  "name": "@/api-v1",
+  "name": "api-v1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.9.2",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*"
+    "@piggy/eslint-config": "workspace:*",
+    "@piggy/typescript-config": "workspace:*"
   }
 }

@@ -3,21 +3,25 @@ import path from "path";
 import dotenv from "dotenv";
 import { z } from "zod";
 
-// 1️⃣ Load correct .env file based on NODE_ENV
+// Load correct .env file based on NODE_ENV
 const NODE_ENV = process.env.NODE_ENV || "development";
+const ROOT_DIR = path.resolve(__dirname, "../../../"); 
 const envFile = `.env.${NODE_ENV}`;
+const envPath = path.join(ROOT_DIR, envFile);
 
-// Resolve file path
-const envPath = path.resolve(process.cwd(), envFile);
-
-// Fallback to .env if specific file not found
+// Load .env
 if (fs.existsSync(envPath)) {
   dotenv.config({ path: envPath });
 } else {
-  dotenv.config();
+  // fallback to .env at repo root
+  const fallbackEnv = path.join(ROOT_DIR, ".env");
+  if (fs.existsSync(fallbackEnv)) {
+    dotenv.config({ path: fallbackEnv });
+  } else {
+    console.warn("No .env file found at root or for current environment.");
+  }
 }
-
-// 2️⃣ Define schema for environment variables
+// Define schema for environment variables
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "staging", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(3000),
@@ -27,7 +31,7 @@ const envSchema = z.object({
   CORS_ORIGINS: z.string().optional(),
 });
 
-// 3️⃣ Parse & validate env
+// Parse & validate env
 const env = envSchema.parse(process.env);
 
 // Interfaces for structured config

@@ -1,0 +1,31 @@
+{
+  "name": "@piggy/db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "generate": "drizzle-kit --config src/drizzle.config.ts generate",
+    "migrate": "drizzle-kit --config src/drizzle.config.ts migrate",
+    "push": "drizzle-kit --config src/drizzle.config.ts push",
+    "studio": "drizzle-kit --config src/drizzle.config.ts studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@piggy/config": "workspace:*",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.4",
+    "pg": "^8.16.3",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@piggy/typescript-config": "workspace:*",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4"
+  }
+}

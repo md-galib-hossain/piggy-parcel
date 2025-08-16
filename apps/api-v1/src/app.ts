@@ -1,3 +1,4 @@
+import { db, user } from '@piggy/db';
 import { AppConfig } from '@piggy/config';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -11,6 +12,10 @@ app.use(cookieParser());
 //parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/users",async(req,res)=>{
+  const users = await db.select().from(user)
+})
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World");

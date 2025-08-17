@@ -29,20 +29,9 @@ async function main() {
     const config = AppConfig.getInstance();
     const port = config.server.port;
     const apiUrl = config.server.apiUrl;
-    const seedUser = {
-      id: "1",
-      name: "Galib",
-      emailVerified: false,
-      image: "",
-    };
 
-    const existing = await db.select().from(user).where(eq(user.name, "Galib"));
-    if (existing.length === 0) {
-      await db.insert(user).values(seedUser);
-      console.log("User seeded!");
-    } else {
-      console.log("User already exists, skipping...");
-    }
+
+  
     server.listen(port, () => {
       console.log(`🚀 Server listening on port ${port}`);
       console.log(`API URL: ${apiUrl}`);

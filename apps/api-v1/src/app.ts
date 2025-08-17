@@ -15,6 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/users",async(req,res)=>{
   const users = await db.select().from(user)
+  res.status(httpStatus.OK).json({
+    success: true,
+    data: users,
+  })
 })
 
 app.get("/", (req: Request, res: Response) => {

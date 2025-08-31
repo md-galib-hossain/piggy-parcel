@@ -14,6 +14,7 @@
   "devDependencies": {
     "@piggy/config": "workspace:*",
     "@piggy/db": "workspace:*",
+    "@piggy/types": "workspace:*",
     "@piggy/eslint-config": "workspace:*",
     "@piggy/typescript-config": "workspace:*",
     "@types/cookie-parser": "^1.4.9",

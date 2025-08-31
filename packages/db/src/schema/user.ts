@@ -61,3 +61,5 @@ export const rateLimit = pgTable("rate_limit", {
   count: integer("count"),
   lastRequest: bigint("last_request", { mode: "number" }),
 });
+
+export type UserDB = typeof user;

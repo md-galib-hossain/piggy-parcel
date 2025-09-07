@@ -1,27 +1,35 @@
 import { AppConfig } from "./appConfig";
+
 import { PasswordResetTemplate } from "./email/templates/PasswordResetTemplate";
 import { WelcomeTemplate } from "./email/templates/WelcomeTemplate";
-
+import { Resend } from "resend";
 export interface EmailTemplate {
   render(data: any): { subject: string; html: string };
 }
-
-interface EmailConfigOptions {
-  smtp: {
-    host: string;
-    port: number;
-    auth: {
-      user: string;
-      pass: string;
-    };
-  };
-  from: string;
-  templates: Map<string, EmailTemplate>;
-}
-
 export class EmailConfig {
   private static instance: EmailConfig;
-  private readonly config: EmailConfigOptions;
+
+  private resendClient: Resend;
+  private from: string;
+  private templates: Map<string, EmailTemplate>;
+
+  private constructor() {
+    const appConfig = AppConfig.getInstance();
+
+    if (!appConfig.email.resendApiKey) {
+      throw new Error("RESEND_API_KEY is required for email service.");
+    }
+
+    this.resendClient = new Resend(appConfig.email.resendApiKey);
+    this.from = appConfig.email.emailFrom ?? "noreply@example.com";
+
+    // Initialize templates
+    this.templates = new Map<string, EmailTemplate>([
+      ["welcome", new WelcomeTemplate()],
+      ["passwordReset", new PasswordResetTemplate()],
+      // Add more templates here
+    ]);
+  }
 
   static getInstance(): EmailConfig {
     if (!EmailConfig.instance) {
@@ -30,48 +38,29 @@ export class EmailConfig {
     return EmailConfig.instance;
   }
 
-  private constructor() {
-    this.config = this.loadConfig();
-  }
-
-  private loadConfig(): EmailConfigOptions {
-    const appConfig = AppConfig.getInstance();
-
-    if (!appConfig.email.smtpHost || !appConfig.email.smtpUser || !appConfig.email.smtpPass || !appConfig.email.emailFrom) {
-      throw new Error("Missing required SMTP configuration. Please check your environment variables.");
-    }
-
-    const templates = new Map<string, EmailTemplate>();
-    templates.set("passwordReset", new PasswordResetTemplate());
-    templates.set("welcome", new WelcomeTemplate());
-
-    return {
-      smtp: {
-        host: appConfig.email.smtpHost,
-        port: appConfig.email.smtpPort ?? 587,
-        auth: {
-          user: appConfig.email.smtpUser,
-          pass: appConfig.email.smtpPass,
-        },
-      },
-      from: appConfig.email.emailFrom,
-      templates,
-    };
-  }
-
-  get smtp() {
-    return this.config.smtp;
-  }
-
-  get from() {
-    return this.config.from;
-  }
-
   getTemplate(name: string): EmailTemplate | undefined {
-    return this.config.templates.get(name);
+    return this.templates.get(name);
   }
 
-  addTemplate(name: string, template: EmailTemplate): void {
-    this.config.templates.set(name, template);
+  addTemplate(name: string, template: EmailTemplate) {
+    this.templates.set(name, template);
+  }
+
+  async send(templateName: string, to: string, data: any) {
+    const template = this.getTemplate(templateName);
+    if (!template) throw new Error(`Email template "${templateName}" not found.`);
+
+    const { subject, html } = template.render(data);
+
+    const { data: response, error } = await this.resendClient.emails.send({
+      from: this.from,
+      to: [to],
+      subject,
+      html,
+    });
+
+    if (error) throw error;
+
+    return response;
   }
 }

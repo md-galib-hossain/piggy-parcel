@@ -29,11 +29,10 @@ const envSchema = z.object({
   DB_POOL_SIZE: z.coerce.number().int().positive().optional(),
   API_URL: z.string().url().optional(),
   CORS_ORIGINS: z.string().optional(),
-  SMTP_HOST: z.string().min(1, "SMTP_HOST is required").optional(),
-  SMTP_PORT: z.coerce.number().int().positive().default(587).optional(),
-  SMTP_USER: z.string().min(1, "SMTP_USER is required").optional(),
-  SMTP_PASS: z.string().min(1, "SMTP_PASS is required").optional(),
+ 
   EMAIL_FROM: z.email("EMAIL_FROM must be a valid email").optional(),
+  RESEND_API_KEY: z.string().optional(),
+
 });
 
 // Parse & validate env
@@ -54,18 +53,18 @@ interface ServerConfig {
   apiUrl: string;
 }
 
-interface EmailConfig {
-  smtpHost?: string | undefined;
-  smtpPort?: number | undefined;
-  smtpUser?: string | undefined;
-  smtpPass?: string | undefined;
+interface AppEmailConfig {
+
   emailFrom?: string | undefined;
+  resendApiKey?: string | undefined;
+
+  
 }
 interface AppConfigOptions {
   database: DatabaseConfig;
   security: SecurityConfig;
   server: ServerConfig;
-  email: EmailConfig;
+  email: AppEmailConfig;
 }
 
 type Environment = "development" | "staging" | "production";
@@ -100,11 +99,10 @@ export class AppConfig {
         apiUrl: env.API_URL ?? `http://localhost:${env.PORT}`,
       },
       email: {
-        smtpHost: env.SMTP_HOST,
-        smtpPort: env.SMTP_PORT,
-        smtpUser: env.SMTP_USER,
-        smtpPass: env.SMTP_PASS,
+       
         emailFrom: env.EMAIL_FROM,
+          resendApiKey: env.RESEND_API_KEY,
+
       },
     };
   }
@@ -137,7 +135,7 @@ export class AppConfig {
   get server(): ServerConfig {
     return this.config.server;
   }
-  get email(): EmailConfig {
+  get email(): AppEmailConfig {
   return this.config.email;
 }
 }

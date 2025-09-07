@@ -15,7 +15,6 @@ interface ValidationSchema {
 
 const validateRequest = (schema: ValidationSchema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     try {
       await schema.parseAsync({
         body: req.body,

@@ -75,6 +75,9 @@ importers:
       http-status:
         specifier: ^2.1.0
         version: 2.1.0
+      nodemailer:
+        specifier: ^7.0.6
+        version: 7.0.6
       ts-node-dev:
         specifier: ^2.0.0
         version: 2.0.0(@types/node@22.15.3)(typescript@5.9.2)
@@ -1999,6 +2002,10 @@ packages:
         optional: true
       sass:
         optional: true
+
+  nodemailer@7.0.6:
+    resolution: {integrity: sha512-F44uVzgwo49xboqbFgBGkRaiMgtoBrBEWCVincJPK9+S9Adkzt/wXCLKbf7dxucmxfTI5gHGB+bEmdyzN6QKjw==}
+    engines: {node: '>=6.0.0'}
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -4289,6 +4296,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+
+  nodemailer@7.0.6: {}
 
   normalize-path@3.0.0: {}
 

@@ -19,7 +19,8 @@ const loginUser= async(email:string,password:string)=> {
     const user = await auth.api.signInEmail({
         body: {
             email,password
-        }
+        },
+        
     })
 
     if(!user) throw new AppError(404,"User not found");

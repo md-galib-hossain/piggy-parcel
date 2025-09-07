@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-"dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "build": "tsc -p tsconfig.json"
   },
   "keywords": [],
@@ -31,6 +31,7 @@
     "drizzle-orm": "^0.44.4",
     "express": "^5.1.0",
     "http-status": "^2.1.0",
+    "nodemailer": "^7.0.6",
     "ts-node-dev": "^2.0.0",
     "zod": "^3.25.76"
   }

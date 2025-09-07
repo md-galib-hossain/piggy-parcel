@@ -1,18 +1,4 @@
-// Common user summary type that can be reused across the application
-export interface UserSummary {
-  id: string;
-  name: string;
-  email: string;
-  userName?: string | null;
-  image?: string | null;
-}
 
-// Basic user info type with additional fields
-export interface BasicUserInfo extends UserSummary {
-  role: string;
-  emailVerified: boolean;
-  createdAt: Date;
-}
 
 // Pagination metadata type
 export interface PaginationMeta {

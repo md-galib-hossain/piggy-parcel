@@ -1,4 +1,5 @@
-import { UserSummary, BaseQueryParams } from '../common/shared';
+import { BaseQueryParams } from '../common/shared';
+import { User } from '../user/auth';
 
 export interface Rating {
   id: number;
@@ -24,8 +25,8 @@ export interface UpdateRating extends Partial<Pick<
 
 // Using intersection types for extended interfaces
 export interface RatingWithUsers extends Rating {
-  reviewer: UserSummary;
-  reviewed: UserSummary;
+  reviewer: User;
+  reviewed: User;
 }
 
 // Query parameters

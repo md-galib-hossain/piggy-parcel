@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserRoutes } from "../modules/Consumer/User/user.route";
+import userRoutes from "@/app/modules/Consumer/User/user.route";
 
 const router : Router= Router();
 
@@ -12,7 +12,7 @@ interface RouteConfig {
 const consumerRoutes: RouteConfig[] = [
   {
     path: "/user",
-    route: UserRoutes,
+    route: userRoutes,
   },
   // Add more consumer routes here
   // {

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AdminUserRoutes } from "../modules/Admin/User/adminUser.route";
+// import { AdminUserRoutes } from "../modules/Admin/User/adminUser.route";
 
 const router : Router= Router();
 
@@ -10,10 +10,10 @@ interface RouteConfig {
 }
 
 const adminRoutes: RouteConfig[] = [
-  {
-    path: "/users",
-    route: AdminUserRoutes,
-  },
+  // {
+  //   path: "/users",
+  //   route: AdminUserRoutes,
+  // },
   // Add more admin routes here
   // {
   //   path: "/analytics",

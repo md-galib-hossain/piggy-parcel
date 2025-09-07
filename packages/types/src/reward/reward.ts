@@ -1,4 +1,5 @@
-import { UserSummary, BaseEntity, BaseQueryParams } from '../common/shared';
+import {  BaseEntity, BaseQueryParams } from '../common/shared';
+import { User } from '../user/auth';
 
 export type BadgeType = 
   | "eco_warrior" 
@@ -32,7 +33,7 @@ export interface UpdateReward extends Partial<Pick<Reward, 'greenPoints' | 'badg
 
 // Using intersection types
 export interface RewardWithUser extends Reward {
-  user: UserSummary;
+  user: User;
 }
 
 // Enhanced interfaces using utility types
@@ -44,7 +45,7 @@ export interface UserRewardStats extends Pick<Reward, 'userId'> {
 }
 
 export interface LeaderboardEntry {
-  user: UserSummary;
+  user: User;
   greenPoints: number;
   badges: Badge[];
   rank: number;

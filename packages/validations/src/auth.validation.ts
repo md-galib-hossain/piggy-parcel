@@ -12,7 +12,7 @@ export const sessionSchema = z.object({
 // Create Session Schema
 export const createSessionSchema = z.object({
   userId: z.string().min(1, 'User ID is required'),
-  expiresAt: z.string().datetime().transform((val) => new Date(val)),
+  expiresAt: z.string().transform((val) => new Date(val)),
   ipAddress: z.string().regex(/^(\d{1,3}\.){3}\d{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/, 'Invalid IP address').optional(),
   userAgent: z.string().optional(),
 });

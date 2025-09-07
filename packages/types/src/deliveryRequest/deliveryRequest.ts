@@ -1,4 +1,4 @@
-import { UserSummary, BaseEntity, BaseQueryParams } from '../common/shared';
+import {  BaseEntity, BaseQueryParams } from '../common/shared';
 import { 
   CreateInput, 
   UpdateInput, 
@@ -7,6 +7,7 @@ import {
   FilterParams,
   PaginatedResponse 
 } from '../common/utility';
+import { User } from '../user/auth';
 
 export interface ParcelDetails {
   size: string;
@@ -45,8 +46,8 @@ export type UpdateDeliveryRequest = UpdateInput<DeliveryRequest>;
 
 // Using WithRelations utility type
 export type DeliveryRequestWithUsers = WithRelations<DeliveryRequest, {
-  sender: UserSummary;
-  traveler?: UserSummary | null;
+  sender: User;
+  traveler?: User | null;
 }>;
 
 // Status transition tracking

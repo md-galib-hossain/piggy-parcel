@@ -1,11 +1,8 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
-  "extends": "@piggy/typescript-config/base.json",
+    "extends": "@piggy/typescript-config/base.json",
+
   "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    },
     // File Layout
     "rootDir": "./src",
     "outDir": "./dist",

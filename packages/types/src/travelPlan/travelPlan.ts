@@ -1,5 +1,6 @@
-import { UserSummary, BaseEntity, BaseQueryParams, DateRangeQueryParams } from '../common/shared';
+import {  BaseEntity, BaseQueryParams, DateRangeQueryParams } from '../common/shared';
 import { CreateInput, UpdateInput, WithRelations, FilterParams, PaginatedResponse } from '../common/utility';
+import { User } from '../user/auth';
 
 export type TransportMode = 
   | "bus" 
@@ -25,7 +26,7 @@ export type UpdateTravelPlan = UpdateInput<TravelPlan>;
 
 // Using WithRelations utility type
 export type TravelPlanWithTraveler = WithRelations<TravelPlan, {
-  traveler: UserSummary;
+  traveler: User;
 }>;
 
 // Enhanced query parameters

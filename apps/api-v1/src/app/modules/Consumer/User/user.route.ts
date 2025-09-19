@@ -5,8 +5,10 @@ import { createUserSchema, loginSchema } from "@piggy/validations";
 
 const userRoutes: express.Router = express.Router();
 
-const { registerUser, loginUser } = UserController;
+const { registerUser, loginUser, requestPasswordReset } = UserController;
 
 userRoutes.post("/register", validateRequest(createUserSchema), registerUser);
 userRoutes.post("/login", validateRequest(loginSchema), loginUser);
+userRoutes.post("/request-password-reset", requestPasswordReset);
+
 export default userRoutes;

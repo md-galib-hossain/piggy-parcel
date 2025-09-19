@@ -60,6 +60,9 @@ importers:
       '@piggy/auth':
         specifier: workspace:*
         version: link:../../packages/auth
+      '@piggy/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -224,6 +227,28 @@ importers:
       drizzle-kit:
         specifier: ^0.31.4
         version: 0.31.4
+
+  packages/email:
+    dependencies:
+      '@piggy/config':
+        specifier: workspace:*
+        version: link:../config
+      dotenv:
+        specifier: ^17.2.1
+        version: 17.2.1
+      resend:
+        specifier: ^6.0.2
+        version: 6.0.2
+    devDependencies:
+      '@piggy/types':
+        specifier: workspace:*
+        version: link:../types
+      '@piggy/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
 
   packages/eslint-config:
     devDependencies:

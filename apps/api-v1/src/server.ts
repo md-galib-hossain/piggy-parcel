@@ -1,8 +1,8 @@
 import { AppConfig } from "@piggy/config";
 import { createServer, Server } from "http";
 import app from "./app";
-import { db, user } from "@piggy/db";
-import { eq } from "drizzle-orm";
+import { initializeEmailService } from "./app/config/emailSetup";
+
 const server: Server = createServer(app);
 
 const unexpectedErrorHandler = (error: unknown) => {
@@ -30,8 +30,9 @@ async function main() {
     const port = config.server.port;
     const apiUrl = config.server.apiUrl;
 
+    // Initialize email service
+    initializeEmailService();
 
-  
     server.listen(port, () => {
       console.log(`🚀 Server listening on port ${port}`);
       console.log(`API URL: ${apiUrl}`);

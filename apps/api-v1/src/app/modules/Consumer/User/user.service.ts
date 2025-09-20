@@ -34,6 +34,16 @@ const loginUser = async (email: string, password: string) => {
     },
   });
 
+   try {
+    await Email.sendWelcomeEmail(user.user.email, {
+      userName: user.user.name
+    });
+    console.log(`📧 Welcome email sent to ${user.user.email}`);
+  } catch (error) {
+    console.error("Failed to send welcome email:", error);
+    // Don't throw error for email failure, just log it
+  }
+
   if (!user) throw new AppError(404, "User not found");
   return user;
 };

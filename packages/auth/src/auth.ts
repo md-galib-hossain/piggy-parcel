@@ -1,7 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, emailOTP } from "better-auth/plugins";
-import { account, db, rateLimit, session, user, verification } from "@piggy/db"
+import { admin as adminPlugin } from "better-auth/plugins";
+import { ac, roles } from "./permissions";
+import { account, db, rateLimit, session, user, verification } from "@piggy/db";
 
 // Define the schema object for the adapter
 const authSchema = {
@@ -47,11 +49,13 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    admin({
-      
-      adminRoles: ["admin", "superadmin"],
+    adminPlugin({
+      defaultRole: "USER",
+      adminRoles: ["ADMIN","SUPERADMIN"],
+      ac,
+      roles,
+
       adminUserIds: [],
-      defaultRole: "user",
       defaultBanReason: "No reason",
       impersonationSessionDuration: 60 * 60 * 24,
     }),

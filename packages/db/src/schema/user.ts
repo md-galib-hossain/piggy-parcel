@@ -1,5 +1,6 @@
 import { boolean } from "drizzle-orm/pg-core";
 import { integer } from "drizzle-orm/pg-core";
+import { unique } from "drizzle-orm/pg-core";
 import { bigint } from "drizzle-orm/pg-core";
 import { timestamp } from "drizzle-orm/pg-core";
 import { text } from "drizzle-orm/pg-core";
@@ -8,17 +9,19 @@ import { pgTable } from "drizzle-orm/pg-core";
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  email: text("email").notNull().unique(),
+  email: text("email").notNull(),
   emailVerified: boolean("email_verified").$defaultFn(() => false).notNull(),
   image: text("image"),
   createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
   updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
-  role: text("role").$defaultFn(() => "user").notNull(), // Change to single text field
+  role: text("role").$defaultFn(() => "user").notNull(),
   banned: boolean("banned"),
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
   userName: text("user_name"),
-});
+}, (table) => [
+  unique("email_role_unique").on(table.email, table.role),
+]);
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),

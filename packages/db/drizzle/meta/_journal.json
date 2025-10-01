@@ -8,6 +8,13 @@
       "when": 1755541078533,
       "tag": "0000_rapid_mentor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1759300116478,
+      "tag": "0001_brainy_selene",
+      "breakpoints": true
     }
   ]
 }

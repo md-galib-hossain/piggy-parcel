@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { AppConfig } from '@piggy/config';
+import * as schema from "./schema"; 
 const config = AppConfig.getInstance();
 const dbUrl = config.database.url;
 
@@ -14,4 +15,4 @@ const pool = new Pool({
   idleTimeoutMillis: 30000, 
 });
 
-export const db = drizzle(pool);
+export const db = drizzle(pool,{ schema });

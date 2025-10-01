@@ -29,11 +29,14 @@ const envSchema = z.object({
   DB_POOL_SIZE: z.coerce.number().int().positive().optional(),
   API_URL: z.string().url().optional(),
   CORS_ORIGINS: z.string().optional(),
- 
   EMAIL_FROM: z.email("EMAIL_FROM must be a valid email").optional(),
   RESEND_API_KEY: z.string().optional(),
-
+  SUPER_ADMIN_EMAIL: z.string().email(),
+  SUPER_ADMIN_PASSWORD: z.string(),
+  SUPER_ADMIN_NAME: z.string(),
+  SUPER_ADMIN_USERNAME: z.string(),
 });
+
 
 // Parse & validate env
 const env = envSchema.parse(process.env);
@@ -60,12 +63,21 @@ interface AppEmailConfig {
 
   
 }
+interface SuperAdminConfig {
+  email: string;
+  password: string;
+  name: string;
+  username: string;
+}
+
 interface AppConfigOptions {
   database: DatabaseConfig;
   security: SecurityConfig;
   server: ServerConfig;
   email: AppEmailConfig;
+  superAdmin: SuperAdminConfig;
 }
+
 
 type Environment = "development" | "staging" | "production";
 
@@ -104,6 +116,12 @@ export class AppConfig {
           resendApiKey: env.RESEND_API_KEY,
 
       },
+       superAdmin: {
+      email: env.SUPER_ADMIN_EMAIL,
+      password: env.SUPER_ADMIN_PASSWORD,
+      name: env.SUPER_ADMIN_NAME,
+      username: env.SUPER_ADMIN_USERNAME,
+    },
     };
   }
 
@@ -137,5 +155,8 @@ export class AppConfig {
   }
   get email(): AppEmailConfig {
   return this.config.email;
+}
+get superAdmin(): SuperAdminConfig {
+  return this.config.superAdmin;
 }
 }

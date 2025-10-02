@@ -12,6 +12,8 @@
     "migrate": "drizzle-kit --config src/drizzle.config.ts migrate",
     "push": "drizzle-kit --config src/drizzle.config.ts push",
     "studio": "drizzle-kit --config src/drizzle.config.ts studio",
+    "reset": "drizzle-kit --config src/drizzle.config.ts reset",
+
         "sync": "pnpm run generate && pnpm run build"
 
   },

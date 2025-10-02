@@ -2,6 +2,7 @@ import { AppConfig } from "@piggy/config";
 import { createServer, Server } from "http";
 import app from "./app";
 import { initializeEmailService } from "./app/config/emailSetup";
+import { bootstrapSuperAdmin } from "./bootstrap";
 
 const server: Server = createServer(app);
 
@@ -32,6 +33,7 @@ async function main() {
 
     // Initialize email service
     initializeEmailService();
+    await bootstrapSuperAdmin()
 
     server.listen(port, () => {
       console.log(`🚀 Server listening on port ${port}`);

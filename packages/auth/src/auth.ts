@@ -22,17 +22,25 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  
   user: {
+
     additionalFields: {
       userName: {
         type: "string",
         defaultValue: "",
         input: true,
       },
+      role:{
+        type: "string",
+        input:false
+      }
     },
   },
   advanced: {
     cookiePrefix: "piggy-parcel",
+   
+
   },
   rateLimit: {
     storage: "database",
@@ -50,6 +58,7 @@ export const auth = betterAuth({
   },
   plugins: [
     adminPlugin({
+
       defaultRole: "USER",
       adminRoles: ["ADMIN","SUPERADMIN"],
       ac,

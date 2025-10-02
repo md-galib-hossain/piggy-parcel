@@ -1,6 +1,5 @@
 import { user } from '@piggy/db';
-// src/bootstrap.ts
-import { auth } from "@piggy/auth"; // your BetterAuth instance
+import { auth } from "@piggy/auth";
 import { AppConfig } from "@piggy/config";
 import { db } from "@piggy/db";
 import { eq } from 'drizzle-orm';
@@ -11,31 +10,41 @@ export const bootstrapSuperAdmin = async () => {
     const config = AppConfig.getInstance();
     const email = config.superAdmin.email;
 
-    // Check if superAdmin already exists
-const existingUser = await db
-        .select()
-        .from(user)
-        .where(eq(user.email, email))
-        .limit(1);
-    if (existingUser[0] && existingUser[0].role === "SUPERADMIN") {
-      console.log("✅ Superadmin already exists");
-      return;
+    console.log("Bootstrapping superAdmin...");
+
+    // check if user exists
+    const [existingUser] = await db
+      .select()
+      .from(user)
+      .where(eq(user.email, email))
+      .limit(1);
+
+    if (existingUser) {
+      // if SUPERADMIN not included, append it
+      if (existingUser.role !== "SUPERADMIN") {
+        await db
+          .update(user)
+          .set({role:"SUPERADMIN"})
+          .where(eq(user.email, email));
+
+        console.log("🔑 Updated existing user with SUPERADMIN role");
+      } else {
+        console.log("✅ Superadmin already exists");
+      }
+    } else {
+      await auth.api.createUser({
+        body: {
+          email: config.superAdmin.email,
+          password: config.superAdmin.password,
+          name: config.superAdmin.name,
+          role: "SUPERADMIN", 
+        },
+      });
+
+      console.log("🚀 Superadmin created successfully");
     }
 
- 
-    const newUser = await auth.api.createUser({
-    body: {
-        email: config.superAdmin.email, 
-        password: config.superAdmin.password, 
-        name: config.superAdmin.name, 
-        role: ["SUPERADMIN"],
-        
-    },
-});
-
-    console.log("🚀 Superadmin created successfully");
-
-    // Optional: send welcome email
+    // send welcome email
     try {
       await Email.sendWelcomeEmail(email, {
         userName: config.superAdmin.name,
@@ -47,7 +56,4 @@ const existingUser = await db
   } catch (error) {
     console.error("❌ Failed to bootstrap superAdmin:", error);
   }
-
-
-
 };

@@ -1,7 +1,7 @@
 {
   "name": "@piggy/email",
   "version": "1.0.0",
-  "description": "Email service with Factory + Builder pattern for Piggy Parcel",
+  "description": "Email service with Factory pattern for Piggy Parcel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "dev": "tsc -p tsconfig.json --watch",
     "example": "node -r ts-node/register examples/usage-examples.ts"
   },
-  "keywords": ["email", "factory", "builder", "templates"],
+  "keywords": ["email", "factory", "templates"],
   "author": "",
   "license": "ISC",
   "dependencies": {

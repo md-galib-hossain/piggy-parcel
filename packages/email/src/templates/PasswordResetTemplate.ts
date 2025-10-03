@@ -1,4 +1,4 @@
-import { EmailBuilder } from "../interfaces/EmailBuilder";
+import { EmailData } from "../interfaces/EmailTemplate";
 import { BaseEmailTemplate, BaseTemplateConfig } from "./BaseEmailTemplate";
 
 export class PasswordResetTemplate extends BaseEmailTemplate {
@@ -6,8 +6,8 @@ export class PasswordResetTemplate extends BaseEmailTemplate {
     super(config);
   }
 
-  render(data: { resetLink: string; userName: string }, builder: EmailBuilder): EmailBuilder {
-    return this.buildEmail(data, builder);
+  render(data: { resetLink: string; userName: string }): EmailData {
+    return this.buildEmail(data);
   }
 
   protected getEmailContent(data: { resetLink: string; userName: string }): { subject: string; bodyHtml: string } {

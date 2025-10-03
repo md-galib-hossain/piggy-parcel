@@ -1,5 +1,4 @@
-import { EmailTemplate } from "../interfaces/EmailTemplate";
-import { EmailBuilder } from "../interfaces/EmailBuilder";
+import { EmailTemplate, EmailData } from "../interfaces/EmailTemplate";
 
 export interface BaseTemplateConfig {
   apiUrl?: string;
@@ -20,7 +19,7 @@ export abstract class BaseEmailTemplate implements EmailTemplate {
   }
 
   // Abstract method that each template must implement
-  abstract render(data: any, builder: EmailBuilder): EmailBuilder;
+  abstract render(data: any): EmailData;
 
   // Protected method to get email content - can be overridden by subclasses
   protected abstract getEmailContent(data: any): { subject: string; bodyHtml: string };
@@ -76,10 +75,13 @@ export abstract class BaseEmailTemplate implements EmailTemplate {
   }
 
   // Default implementation that most templates can use
-  protected buildEmail(data: any, builder: EmailBuilder): EmailBuilder {
+  protected buildEmail(data: any): EmailData {
     const { subject, bodyHtml } = this.getEmailContent(data);
     const fullHtml = this.wrapEmailContent(bodyHtml);
     
-    return builder.setSubject(subject).setHtml(fullHtml);
+    return {
+      subject,
+      html: fullHtml
+    };
   }
 }

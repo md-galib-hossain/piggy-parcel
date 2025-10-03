@@ -2,15 +2,14 @@ import { z } from "zod";
 
 // User Role Schema
 export const userRoleSchema = z.enum([
-  "user",
-  "admin",
-  "superadmin",
-  "moderator",
+  "USER",
+  "ADMIN",
+  "SUPERADMIN",
+  "MODERATOR",
 ]);
 
 // Create User Schema
-export const createUserSchema = z.object({
-  body: z.object({
+export const createUserSchema =  z.object({
     name: z
       .string()
       .min(1, "Name is required")
@@ -20,15 +19,15 @@ export const createUserSchema = z.object({
       .string()
       .min(6, "Password must be at least 6 characters")
       .max(128, "Password must be less than 128 characters"),
-    role: userRoleSchema.optional().default("user"),
+    role: userRoleSchema.optional().default("USER"),
     userName: z
       .string()
       .min(3, "Username must be at least 3 characters")
       .max(30, "Username must be less than 30 characters")
       .optional(),
     image: z.url("Invalid image URL").optional(),
-  }),
-});
+  })
+
 
 // Update User Schema
 export const updateUserSchema = z.object({
@@ -59,11 +58,10 @@ export const updateUserSchema = z.object({
 
 // Login Schema
 export const loginSchema = z.object({
-  body:z.object({
     email: z.email("Invalid email format"),
   password: z.string().min(1, "Password is required"),
-  })
 });
+
 
 // Change Password Schema
 export const changePasswordSchema = z

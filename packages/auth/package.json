@@ -13,7 +13,10 @@
   "license": "ISC",
   "dependencies": {
     "better-auth": "^1.3.8",
-    "@piggy/db": "workspace:*"
+    "@piggy/db": "workspace:*",
+    "@piggy/config": "workspace:*",
+    "@piggy/email": "workspace:*"
+
 
   },
   "devDependencies": {

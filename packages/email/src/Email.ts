@@ -5,6 +5,7 @@
 
 import { sendEmail, initializeEmailService } from "./service/email.service";
 import { EmailServiceConfig } from "./index";
+import { AccountVerificationLinkData } from "./templates/AccountVerificationLink";
 
 export interface EmailOptions {
   cc?: string[];
@@ -82,6 +83,18 @@ export class Email {
   ): Promise<any> {
     this.checkInitialization();
     return sendEmail("passwordReset", to, data, options);
+  }
+
+  /**
+   * Send an account verification link email
+   */
+  static async sendAccountVerificationLink(
+    to: string,
+    data: AccountVerificationLinkData,
+    options?: EmailOptions
+  ): Promise<any> {
+    this.checkInitialization();
+    return sendEmail("emailVerification", to, data, options);
   }
 
   /**

@@ -31,5 +31,4 @@ export { PasswordResetTemplate } from "./templates/PasswordResetTemplate";
 export { DeliveryUpdateTemplate } from "./templates/DeliveryUpdateTemplate";
 
 // Internal interfaces (for advanced customization)
-export type { EmailTemplate } from "./interfaces/EmailTemplate";
-export type { EmailBuilder, Email as EmailInterface } from "./interfaces/EmailBuilder";
+export type { EmailTemplate, EmailData } from "./interfaces/EmailTemplate";

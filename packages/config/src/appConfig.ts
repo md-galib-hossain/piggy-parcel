@@ -29,13 +29,16 @@ const envSchema = z.object({
   DB_POOL_SIZE: z.coerce.number().int().positive().optional(),
   API_URL: z.string().url().optional(),
   CORS_ORIGINS: z.string().optional(),
-  EMAIL_FROM: z.email("EMAIL_FROM must be a valid email").optional(),
+  EMAIL_FROM: z.email().optional(),
   RESEND_API_KEY: z.string().optional(),
-  SUPER_ADMIN_EMAIL: z.string().email(),
+  SUPER_ADMIN_EMAIL: z.email(),
   SUPER_ADMIN_PASSWORD: z.string(),
   SUPER_ADMIN_NAME: z.string(),
   SUPER_ADMIN_USERNAME: z.string(),
+  NEXT_PUBLIC_WEB_CLIENT_URL: z.url(),
+  NEXT_PUBLIC_ADMIN_CLIENT_URL: z.url(),
 });
+
 
 
 // Parse & validate env
@@ -70,12 +73,18 @@ interface SuperAdminConfig {
   username: string;
 }
 
+interface ClientsConfig {
+  webClientUrl: string;
+  adminClientUrl: string;
+}
+
 interface AppConfigOptions {
   database: DatabaseConfig;
   security: SecurityConfig;
   server: ServerConfig;
   email: AppEmailConfig;
   superAdmin: SuperAdminConfig;
+  clients: ClientsConfig;
 }
 
 
@@ -122,6 +131,10 @@ export class AppConfig {
       name: env.SUPER_ADMIN_NAME,
       username: env.SUPER_ADMIN_USERNAME,
     },
+     clients: {
+      webClientUrl: env.NEXT_PUBLIC_WEB_CLIENT_URL,
+      adminClientUrl: env.NEXT_PUBLIC_ADMIN_CLIENT_URL,
+    },
     };
   }
 
@@ -155,6 +168,9 @@ export class AppConfig {
   }
   get email(): AppEmailConfig {
   return this.config.email;
+}
+  get clients(): ClientsConfig {
+  return this.config.clients;
 }
 get superAdmin(): SuperAdminConfig {
   return this.config.superAdmin;

@@ -1,5 +1,4 @@
 import { EmailTemplateFactory } from "../factory/EmailTemplateFactory";
-import { PiggyParcelEmailBuilder } from "../builders/PiggyParcelEmailBuilder";
 import { EmailServiceConfig } from "../index";
 import { Resend } from "resend";
 
@@ -53,29 +52,9 @@ export async function sendEmail(
       throw new Error("RESEND_API_KEY is required for email service.");
     }
 
-    // Create template and builder
+    // Create template and render email data
     const template = EmailTemplateFactory.createTemplate(templateName);
-    const builder = new PiggyParcelEmailBuilder();
-    
-    // Build the email using template and builder pattern
-    const emailBuilder = template.render(data, builder).addRecipient(to);
-    
-    // Add optional parameters
-    if (options?.cc) {
-      options.cc.forEach(ccEmail => emailBuilder.addCc(ccEmail));
-    }
-    
-    if (options?.bcc) {
-      options.bcc.forEach(bccEmail => emailBuilder.addBcc(bccEmail));
-    }
-    
-    if (options?.attachments) {
-      options.attachments.forEach(attachment => 
-        emailBuilder.addAttachment(attachment.path, attachment.name)
-      );
-    }
-    
-    const email = emailBuilder.build();
+    const emailData = template.render(data);
     
     // Send email using Resend
     const resend = new Resend(config.resendApiKey);
@@ -83,22 +62,22 @@ export async function sendEmail(
     // Prepare email options
     const emailOptions: any = {
       from: config.emailFrom ?? "noreply@piggyparcel.com",
-      to: email.to,
-      subject: email.subject,
-      html: email.html,
+      to: to,
+      subject: emailData.subject,
+      html: emailData.html,
     };
 
     // Add optional fields only if they have values
-    if (email.cc && email.cc.length > 0) {
-      emailOptions.cc = email.cc;
+    if (options?.cc && options.cc.length > 0) {
+      emailOptions.cc = options.cc;
     }
     
-    if (email.bcc && email.bcc.length > 0) {
-      emailOptions.bcc = email.bcc;
+    if (options?.bcc && options.bcc.length > 0) {
+      emailOptions.bcc = options.bcc;
     }
     
-    if (email.attachments && email.attachments.length > 0) {
-      emailOptions.attachments = email.attachments
+    if (options?.attachments && options.attachments.length > 0) {
+      emailOptions.attachments = options.attachments
         .map(attachment => ({
           path: attachment.path,
           ...(attachment.name && { name: attachment.name })

@@ -4,7 +4,9 @@ import { admin, emailOTP } from "better-auth/plugins";
 import { admin as adminPlugin } from "better-auth/plugins";
 import { ac, roles } from "./permissions";
 import { account, db, rateLimit, session, user, verification } from "@piggy/db";
-
+import { AppConfig } from "@piggy/config";
+import { Email } from "@piggy/email";
+import { nextCookies } from "better-auth/next-js";
 // Define the schema object for the adapter
 const authSchema = {
   user,
@@ -13,34 +15,61 @@ const authSchema = {
   verification,
   rateLimit,
 };
-
+const webClientUrl = AppConfig.getInstance().clients.webClientUrl;
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,
   }),
   emailAndPassword: {
+    
     enabled: true,
-  },
-  
-  user: {
+    requireEmailVerification: true,
+    minPasswordLength: 6, // ← missing comma was here
+    sendResetPassword: async ({ user, url, token }, request) => {
+      const frontendResetUrl = `${webClientUrl}/reset-password`;
+      const resetUrl = new URL(url);
+      resetUrl.searchParams.set("callbackURL", frontendResetUrl);
 
+      await Email.sendPasswordResetEmail(user.email, {
+        userName: user.name,
+        resetLink: resetUrl.toString(),
+      });
+    },
+    
+    
+  },
+emailVerification: {
+    sendOnSignUp: true,
+    expiresIn: 60 * 60,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url,token }) => {
+            // const frontendRedirect = `${webClientUrl}/email-verified`;
+
+      const link = new URL(url);
+      link.searchParams.set("callbackURL", "/auth/verify");
+
+    await Email.sendAccountVerificationLink(user.email, {
+      userName: user.name,
+      verificationLink: link.toString(),
+    });
+    },
+  },
+  user: {
     additionalFields: {
       userName: {
         type: "string",
         defaultValue: "",
         input: true,
       },
-      role:{
+      role: {
         type: "string",
-        input:false
-      }
+        input: false,
+      },
     },
   },
   advanced: {
     cookiePrefix: "piggy-parcel",
-   
-
   },
   rateLimit: {
     storage: "database",
@@ -57,10 +86,11 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    adminPlugin({
+        nextCookies(),
 
+    adminPlugin({
       defaultRole: "USER",
-      adminRoles: ["ADMIN","SUPERADMIN"],
+      adminRoles: ["ADMIN", "SUPERADMIN"],
       ac,
       roles,
 

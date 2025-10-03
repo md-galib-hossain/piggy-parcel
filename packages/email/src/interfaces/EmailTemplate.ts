@@ -1,5 +1,8 @@
-import { EmailBuilder } from "../interfaces/EmailBuilder";
+export interface EmailData {
+  subject: string;
+  html: string;
+}
 
 export interface EmailTemplate {
-  render(data: any, builder: EmailBuilder): EmailBuilder;
+  render(data: any): EmailData;
 }

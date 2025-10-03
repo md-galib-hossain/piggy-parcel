@@ -1,4 +1,4 @@
-import { EmailBuilder } from "../interfaces/EmailBuilder";
+import { EmailData } from "../interfaces/EmailTemplate";
 import { BaseEmailTemplate, BaseTemplateConfig } from "./BaseEmailTemplate";
 
 export class DeliveryUpdateTemplate extends BaseEmailTemplate {
@@ -11,8 +11,8 @@ export class DeliveryUpdateTemplate extends BaseEmailTemplate {
     trackingNumber: string; 
     status: string;
     estimatedDelivery?: string;
-  }, builder: EmailBuilder): EmailBuilder {
-    return this.buildEmail(data, builder);
+  }): EmailData {
+    return this.buildEmail(data);
   }
 
   protected getEmailContent(data: { 

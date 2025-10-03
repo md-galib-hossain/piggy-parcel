@@ -3,6 +3,7 @@ import { WelcomeTemplate } from "../templates/WelcomeTemplate";
 import { PasswordResetTemplate } from "../templates/PasswordResetTemplate";
 import { DeliveryUpdateTemplate } from "../templates/DeliveryUpdateTemplate";
 import { BaseTemplateConfig } from "../templates/BaseEmailTemplate";
+import { AccountVerificationLinkTemplate } from "../templates/AccountVerificationLink";
 
 // Re-export for convenience
 export type { BaseTemplateConfig as TemplateConfig };
@@ -11,6 +12,7 @@ export class EmailTemplateFactory {
   private static templates = new Map<string, (config?: BaseTemplateConfig) => EmailTemplate>([
     ["welcome", (config) => new WelcomeTemplate(config)],
     ["passwordReset", (config) => new PasswordResetTemplate(config)],
+    ["emailVerification", (config) => new AccountVerificationLinkTemplate(config)],
     ["deliveryUpdate", (config) => new DeliveryUpdateTemplate(config)],
   ]);
 
